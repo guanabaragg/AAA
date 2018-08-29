@@ -1,0 +1,535 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="head">
+        <script type="text/javascript">
+            function skinChart() {
+                this.cfg.shadow = false;
+                this.cfg.seriesColors = ['#71CC8D', '#33AFDE', '#F7941E'];
+                this.cfg.grid = {
+                    background: '#EDF3F6',
+                    borderColor: '#D9E3E8',
+                    gridLineColor: '#D9E3E8',
+                    shadow: false
+                };
+                this.cfg.axesDefaults = {
+                    rendererOptions: {
+                        textColor: '#778D9B'
+                    }
+                };
+                this.cfg.seriesDefaults = {
+                    shadow: false,
+                    markerOptions: {
+                        shadow: false
+                    }
+                }
+            }
+
+            function skinPie() {
+                this.cfg.seriesColors = ['#dae8ef', '#27aae1', '#33ccff', '#9fadb5'];
+                this.cfg.grid = {
+                    background: '#ffffff',
+                    borderColor: '#eaeaea',
+                    gridLineColor: '#e5ebf0',
+                    shadow: false,
+                    borderWidth: 0
+                };
+                this.cfg.seriesDefaults.shadow = false;
+            }
+            /*Botão topo*/
+            $(document).ready(function () {
+                $(window).scroll(function () {
+                    if ($(this).scrollTop() > 100) {
+                        $('a[href="#top"]').fadeIn();
+                    } else {
+                        $('a[href="#top"]').fadeOut();
+                    }
+                });
+
+                $('a[href="#top"]').click(function () {
+                    $('html, body').animate({scrollTop: 0}, 800);
+                    return false;
+                });
+            });
+        </script>
+        <style type="text/css">
+            .jqplot-target, .jqplot-axis {
+                color: #778D9B;
+            }
+            /*Botão topo */
+            a[href="#top"]{
+                padding:10px;
+                position:fixed;
+                top: 90%;
+                right:2px;
+                display:none;
+                font-size: 30px;
+            }
+            a[href="#top"]:hover{
+                text-decoration:none;
+            }
+        </style>
+
+        <!--f:metadata>
+            <f:viewParam name="id" value="#{parceiroController.id}" />
+            <f:viewAction  action="#{parceiroController.iniciar}" />
+        </f:metadata-->
+
+    </ui:define>
+
+    <ui:define name="content"  >
+
+        <div class="layout-portlets-box" >
+            <div class="Container100 ui-fluid">
+                <div class="ContainerIndent"> 
+
+                    <a href="#top"><p:commandButton icon="fa fa-arrow-up Fs18 white"/></a>
+
+                    <p:messages id="messages5"  autoUpdate="true" closable="true" />
+
+                    <h:form id="frmLista" >
+
+                        <p:panelGrid columns="4"  layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-10,ui-grid-col-3,ui-grid-col-0,ui-grid-col-0" rendered="#{parceiroController.tela == 0}" >
+                            <h2 style="color:black">Cadastro de Locais de Descanso</h2>
+
+                            <p:inputText />
+                            <p:commandButton value="Buscar"  update="listaPesquisa" />
+                            <p:commandButton value="Novo" actionListener="#{parceiroController.novo()}" update=":frmDetalhe :frmLista" />
+
+                        </p:panelGrid>
+
+
+                        <div class="Container100 Responsive100" >
+                            <p:dataTable id="listaPesquisa" var="p" rendered="#{parceiroController.tela == 0}" reflow="true" style="" emptyMessage="Lista vazia" paginator="true" rows="15"  rowsPerPageTemplate="15,50,100">
+                                <p:column headerText="Nome" sortBy="#{p.nome}">
+                                    <p:commandLink value="#{p.nome}"  title="#{p.nome}"  ajax="false" update=":frmDetalhe :frmLista" />
+                                </p:column>
+
+                                <p:column headerText="XXXX" sortBy="#{p.cidade}">
+                                    <p:commandLink value="#{p.cidade}"  title="#{p.cidade}" ajax="false" update=":frmDetalhe :frmLista" />
+                                </p:column>
+
+                                <p:column headerText="XXXX" sortBy="#{p.uf}">
+                                    <p:commandLink value="#{p.uf}"  title="#{p.uf}" ajax="false" update=":frmDetalhe :frmLista" />
+                                </p:column>
+
+                                <p:column headerText="XXXXX" sortBy="#{p.situacao}" >
+                                    <h:outputText value="#{p.situacao}" />
+                                </p:column>
+
+                                <p:column headerText="XXXXX" width="8%">
+                                    <p:commandButton icon="fa fa-search Fs18 white" ajax="false" update=":frmDetalhe :frmLista"/>
+                                </p:column>
+                            </p:dataTable>
+
+                        </div>
+                    </h:form>
+
+                    <h:form id="frmDetalhe">
+                        <p:panelGrid rendered="#{parceiroController.tela == 1}"  columns="5"  layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-10,ui-grid-col-3,ui-grid-col-0,ui-grid-col-0">
+
+                            <p:panelGrid>
+                                <h2>Local de Descanso</h2>
+                            </p:panelGrid>
+                            <p:panelGrid></p:panelGrid>
+
+                            <p:commandButton value="Salvar" actionListener="#{parceiroController.salvar(1)}" update=":frmDetalhe :frmLista" />
+                            <p:commandButton value="Voltar" immediate="true" actionListener="#{parceiroController.mudarTela(0)}" update=":frmDetalhe :frmLista" />
+
+                            <p:commandButton value="Deletar" styleClass="RedButton" actionListener="#{parceiroController.deletar()}"  update=":frmDetalhe :frmLista" >
+                                <p:confirm header="Confirmação" message="Deseja excluir o registro?" icon="ui-icon-alert" />
+                            </p:commandButton>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" />
+                                <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" />
+                            </p:confirmDialog>                                                              
+
+                        </p:panelGrid>
+
+                        <p:separator/>
+
+                        <p:panelGrid rendered="#{parceiroController.tela == 1}" columns="1" layout="grid" styleClass="ui-panelgrid-blank" >
+
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-5"> 
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" > 
+                                    <h:outputText value="Tipo de Local" />
+                                    <p:inputText required="true" requiredMessage="[TIPO DE LOCAL] é Obrigatório!"/>
+                                    <!--p:selectOneMenu value="#{parceiroController.parceiro.seqTipoParceiro}" filter="true" filterMatchMode="contains" required="true" requiredMessage="[TIPO DE LOCAL] é Obrigatório!">
+                                        <f:selectItem itemLabel="Selecione o Tipo de Local" itemValue="#{null}" />
+                                        <f:selectItem itemLabel="Casa de Praia" itemValue="#{null}" />
+                                        <f:selectItem itemLabel="Casa de Campo" itemValue="#{null}" />
+                                        <f:selectItem itemLabel="Pousada" itemValue="#{null}" />
+                                        <f:selectItem itemLabel="Hotel" itemValue="#{null}" />
+                                        <f:selectItems value="#{parceiroController.listaTipoParceiro}" var="tp"  itemLabel="#{tp.nome}" itemValue="#{tp.seqTipoParceiro}"/>
+                                    </p:selectOneMenu-->
+                                </p:panelGrid>                              
+                            </p:panelGrid>
+
+                            <p:separator/>
+
+                            <p:panelGrid id="pnlNome" columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-7,ui-grid-col-4,ui-grid-col-4,
+                                         ui-grid-col-4,ui-grid-col-4,ui-grid-col-4,ui-grid-col-4,ui-grid-col-4,ui-grid-col-4,ui-grid-col-7,ui-grid-col-4"> 
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" > 
+                                    <h:outputText value="Nome do Local"  />                
+                                    <p:inputText required="true" requiredMessage="[NOME DO LOCAL] é Obrigatório!"/>                
+                                </p:panelGrid>
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" > 
+                                    <h:outputText value="CNPJ" />
+                                    <p:inputMask mask="99.999.999/9999-99" required="true" requiredMessage="[CNPJ] é Obrigatório!"/>
+                                    <!--h:outputText value="CPF" />        
+                                    <p:inputMask mask="999.999.999-99"/-->
+                                </p:panelGrid>                                                                                                                     
+                            </p:panelGrid>
+
+                            <p:panelGrid columns="4" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-5,ui-grid-col-1,ui-grid-col-3,ui-grid-col-2" >
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" >                                        
+                                    <h:outputText value="Logradouro" />
+                                    <p:inputText required="true" requiredMessage="[LOGRADOURO] é Obrigatório!"/>
+                                </p:panelGrid> 
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" >
+                                    <h:outputText value="Nº" />
+                                    <p:inputText required="true" requiredMessage="[Nº] é Obrigatório!"/>
+                                </p:panelGrid> 
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" >
+                                    <h:outputText value="Complemento" />
+                                    <p:inputText required="true" requiredMessage="[COMPLEMENTO] é Obrigatório!"/>
+                                </p:panelGrid> 
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" >
+                                    <h:outputText value="Cep" />
+                                    <p:inputMask mask="99999-999" required="true" requiredMessage="[CEP] é Obrigatório!"/>
+                                </p:panelGrid> 
+
+                            </p:panelGrid>
+
+                            <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank" >
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" style="width:350px;">
+                                    <h:outputText value="Bairro" />
+                                    <p:inputText required="true" requiredMessage="[BAIRRO] é Obrigatório!"/>
+                                </p:panelGrid>
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" style="width:350px;">
+                                    <h:outputText value="Cidade" />
+                                    <p:inputText required="true" requiredMessage="[CIDADE] é Obrigatório!"/>
+                                </p:panelGrid> 
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" style="width:310px;">
+                                    <h:outputText value="Unidade Federativa" />
+                                    <p:selectOneMenu  filter="true" filterMatchMode="contains" required="true" requiredMessage="[UNIDADE FEDERATIVA] é Obrigatório!">
+                                        <f:selectItem itemLabel="Rio de Janeiro" itemValue="Rio de Janeiro" />
+                                        <f:selectItem itemLabel="São Paulo" itemValue="São Paulo" />
+                                        <f:selectItem itemLabel="Minas Gerais" itemValue="Minas Gerais" />
+                                        <f:selectItem itemLabel="Espirito Santo" itemValue="Espirito Santo" />                                                                                
+                                    </p:selectOneMenu>
+                                </p:panelGrid>
+
+                            </p:panelGrid> 
+
+                            <p:separator/>
+
+                            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-7,ui-grid-col-4,ui-grid-col-7,
+                                         ui-grid-col-4,ui-grid-col-7,ui-grid-col-4,
+                                         ui-grid-col-4,ui-grid-col-4, ui-grid-col-4,
+                                         ui-grid-col-4, ui-grid-col-4"> 
+                                <h2>Dados do Proprietário</h2>
+                                <p:panelGrid></p:panelGrid>
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" >                                                                                                          
+                                    <h:outputText value="Nome Completo" />
+                                    <p:inputText required="true" requiredMessage="[NOME] é Obrigatório!"/>
+                                </p:panelGrid>
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" > 
+                                    <h:outputText value="RG" />        
+                                    <p:inputMask mask="99.999.999-9" required="true" requiredMessage="[RG] é Obrigatório!"/>
+                                </p:panelGrid>
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" > 
+                                    <h:outputText value="Nacionalidade" />        
+                                    <p:inputText required="true" requiredMessage="[NACIONALIDADE] é Obrigatório!"/>
+                                </p:panelGrid>
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" > 
+                                    <h:outputText value="CPF" />        
+                                    <p:inputMask mask="999.999.999-99" required="true" requiredMessage="[CPF] é Obrigatório!"/>
+                                </p:panelGrid>
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" > 
+                                    <h:outputText value="Profissão" />        
+                                    <p:inputText required="true" requiredMessage="[PROFISSAO] é Obrigatório!"/>
+                                </p:panelGrid>
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" > 
+                                    <h:outputText value="Estado Civil" />
+                                    <p:selectOneMenu  filter="true" filterMatchMode="contains" required="true" requiredMessage="[ESTADO CIVIL] é Obrigatório!">
+                                        <f:selectItem itemLabel="Solteiro(a)" itemValue="Solteiro(a)" />
+                                        <f:selectItem itemLabel="Casado(a)" itemValue="Casado(a)" />
+                                        <f:selectItem itemLabel="Divorciado(a)" itemValue="Divorciado(a)" />
+                                        <f:selectItem itemLabel="Viúvo(a)" itemValue="Viúvo(a)" />                                                                                
+                                    </p:selectOneMenu>
+                                </p:panelGrid>
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" >                                        
+                                    <h:outputText value="Logradouro" />
+                                    <p:inputText required="true" requiredMessage="[LOGRADOURO] é Obrigatório!"/>
+                                </p:panelGrid> 
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" >
+                                    <h:outputText value="Nº" />
+                                    <p:inputText required="true" requiredMessage="[Nº] é Obrigatório!"/>
+                                </p:panelGrid> 
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" >
+                                    <h:outputText value="Complemento" />
+                                    <p:inputText required="true" requiredMessage="[COMPLEMENTO] é Obrigatório!"/>
+                                </p:panelGrid> 
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" >
+                                    <h:outputText value="Cep" />
+                                    <p:inputMask mask="99999-999" required="true" requiredMessage="[CEP] é Obrigatório!"/>
+                                </p:panelGrid> 
+                            </p:panelGrid>
+
+                            <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank" >
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" style="width:350px;">
+                                    <h:outputText value="Bairro" />
+                                    <p:inputText required="true" requiredMessage="[BAIRRO] é Obrigatório!"/>
+                                </p:panelGrid>
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" style="width:350px;">
+                                    <h:outputText value="Cidade" />
+                                    <p:inputText required="true" requiredMessage="[CIDADE] é Obrigatório!"/>
+                                </p:panelGrid> 
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" style="width:310px;">
+                                    <h:outputText value="Unidade Federativa" />
+                                    <p:selectOneMenu  filter="true" filterMatchMode="contains" required="true" requiredMessage="[UNIDADE FEDERATIVA] é Obrigatório!">
+                                        <f:selectItem itemLabel="Rio de Janeiro" itemValue="Rio de Janeiro" />
+                                        <f:selectItem itemLabel="São Paulo" itemValue="São Paulo" />
+                                        <f:selectItem itemLabel="Minas Gerais" itemValue="Minas Gerais" />
+                                        <f:selectItem itemLabel="Espirito Santo" itemValue="Espirito Santo" />                                                                                
+                                    </p:selectOneMenu>
+                                </p:panelGrid>
+
+                            </p:panelGrid> 
+
+                            <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank">
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" style="width:350px;">
+                                    <h:outputText value="Telefone Residêncial" />
+                                    <p:inputMask mask="(999) 9999-9999" required="true" requiredMessage="[TEL RESIDENCIAL] é Obrigatório!"/>
+                                </p:panelGrid> 
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" style="width:350px;">
+                                    <h:outputText value="Celular WhatsApp" />
+                                    <p:inputMask mask="(999) 9 9999-9999" required="true" requiredMessage="[CEL/WHATSAPP] é Obrigatório!"/>
+                                </p:panelGrid> 
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" style="width:310px;">
+                                    <h:outputText value="E-mail" />
+                                    <p:inputText required="true" requiredMessage="[E-MAIL] é Obrigatório!"/>
+                                </p:panelGrid> 
+
+                            </p:panelGrid>  
+
+                            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+
+                                <p:panelGrid>
+                                    <p:outputLabel value="DISPONIBILIDADE DO LOCAL: O local estará disponível durante todo o ano?" />
+                                    <p:selectOneRadio value="#{parceiroController.dispLocal}">    
+                                        <f:selectItem itemLabel="Sim" itemValue="true" />    
+                                        <f:selectItem itemLabel="Não" itemValue="false" />    
+                                        <p:ajax update="panelGeral" event="change"/>  
+                                    </p:selectOneRadio>  
+                                </p:panelGrid>
+
+                                <p:panelGrid>
+                                    <p:outputPanel id="panelGeral" layout="grid" styleClass="ui-panelgrid-blank">                                   
+                                        <p:panelGrid id="b" columns="1" layout="grid" styleClass="ui-panelgrid-blank" style="width:670px;" rendered="#{parceiroController.dispLocal == false}" >
+                                            <h:outputLabel value="Quais os períodos/meses que NÃO estará disponível ?"/>
+                                            <p:inputText />
+                                        </p:panelGrid>                                    
+                                    </p:outputPanel>
+                                </p:panelGrid>
+
+                            </p:panelGrid> 
+
+                            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-6,ui-grid-col-5">
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                    <h:outputLabel value="Qual o máximo de diárias para cada agendamento ?"/>
+                                    <p:inputText />
+                                </p:panelGrid>
+
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                    <h:outputLabel value="Quantas famílias por mês poderão ser agendadas ?"/>
+                                    <p:inputText />                                    
+                                </p:panelGrid>
+
+                            </p:panelGrid> 
+
+                            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+
+                                <p:panelGrid>
+                                    <p:outputLabel value="Haverá algum custo de hospedagem ?" />
+                                    <p:selectOneRadio value="#{parceiroController.custoHospedagem}">    
+                                        <f:selectItem itemLabel="Sim" itemValue="true" />    
+                                        <f:selectItem itemLabel="Não" itemValue="false" />    
+                                        <p:ajax update="pnlGeral" event="change"/>  
+                                    </p:selectOneRadio>  
+                                </p:panelGrid>
+
+                                <p:panelGrid>
+                                    <p:outputPanel id="pnlGeral" layout="grid" styleClass="ui-panelgrid-blank">                                   
+                                        <p:panelGrid  columns="1" layout="grid" styleClass="ui-panelgrid-blank" style="width:670px;" rendered="#{parceiroController.custoHospedagem == true}" >
+                                            <h:outputLabel value="Qual será o valor ?"/>
+                                            <p:inputText />
+                                        </p:panelGrid>                                    
+                                    </p:outputPanel>
+                                </p:panelGrid>
+
+                            </p:panelGrid> 
+
+                            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+
+                                <p:panelGrid>
+                                    <p:outputLabel value="Haverá algum custo de alimentação ?" />
+                                    <p:selectOneRadio value="#{parceiroController.custoAlimentacao}">    
+                                        <f:selectItem itemLabel="Sim" itemValue="true" />    
+                                        <f:selectItem itemLabel="Não" itemValue="false" />    
+                                        <p:ajax update="pnlGerall" event="change"/>  
+                                    </p:selectOneRadio>  
+                                </p:panelGrid>
+
+                                <p:panelGrid>
+                                    <p:outputPanel id="pnlGerall" layout="grid" styleClass="ui-panelgrid-blank">                                   
+                                        <p:panelGrid  columns="1" layout="grid" styleClass="ui-panelgrid-blank" style="width:670px;" rendered="#{parceiroController.custoAlimentacao == true}" >
+                                            <h:outputLabel value="Qual será o valor das refeições (café, almoço e janta) ?"/>
+                                            <p:inputText />
+                                        </p:panelGrid>                                    
+                                    </p:outputPanel>
+                                </p:panelGrid>
+
+                            </p:panelGrid> 
+
+                            <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank">
+
+                                <p:panelGrid>
+                                    <p:outputLabel value="O local disponibilizará roupa de cama e banho?" />
+                                    <p:selectOneRadio >    
+                                        <f:selectItem itemLabel="Sim" itemValue="true" />    
+                                        <f:selectItem itemLabel="Não" itemValue="false" />                                            
+                                    </p:selectOneRadio>  
+                                </p:panelGrid>
+
+                            </p:panelGrid> 
+                        </p:panelGrid> 
+
+                        <p:panelGrid columns="2" layout="grid" styleClass="ui-panelgrid-blank" rendered="#{parceiroController.tela == 1}">
+
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                <p:outputLabel value="O que o local de descanso disponibiliza ?" />
+                                <p:selectManyCheckbox value="#{parceiroController.localDescDisponibiliza}" >
+                                    <f:selectItem itemLabel="Piscina" itemValue="Piscina" />    
+                                    <f:selectItem itemLabel="Quadra de esportes" itemValue="Quadra de esportes" />                                            
+                                    <f:selectItem itemLabel="Restaurante" itemValue="Restaurante" />                                            
+                                    <f:selectItem itemLabel="TV" itemValue="TV" />                                            
+                                    <f:selectItem itemLabel="Wifi" itemValue="Wifi" />                                            
+                                    <f:selectItem itemLabel="Garagem" itemValue="Garagem" />                                                                                
+                                    <p:selectOneRadio value="#{parceiroController.localDescDisponibilizaOutro}">
+                                        <f:selectItem itemLabel="Outros" itemValue="Outros"/> 
+                                        <f:selectItem itemLabel="-" itemValue="-"/> 
+                                        <p:ajax update="pnll" event="change"/>  
+                                    </p:selectOneRadio>    
+                                </p:selectManyCheckbox>                                                                
+                            <!--p:selectOneRadio value="#{parceiroController.localDescDisponibiliza}">    
+                                                                <f:selectItem itemLabel="Piscina" itemValue="Piscina" />    
+                                                                <f:selectItem itemLabel="Quadra de esportes" itemValue="Quadra de esportes" />                                            
+                                                                <f:selectItem itemLabel="Restaurante" itemValue="Restaurante" />                                            
+                                                                <f:selectItem itemLabel="TV" itemValue="TV" />                                            
+                                                                <f:selectItem itemLabel="Wifi" itemValue="Wifi" />                                            
+                                                                <f:selectItem itemLabel="Garagem" itemValue="Garagem" />                                            
+                                                                <f:selectItem itemLabel="Outros" itemValue="Outros" />                                                                                                                           
+                                                                <p:ajax update="pnll" event="change"/>  
+                                                            </p:selectOneRadio-->
+                            </p:panelGrid>
+
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                <p:outputPanel id="pnll" layout="grid" styleClass="ui-panelgrid-blank">                                   
+                                    <p:panelGrid  columns="1" layout="grid" styleClass="ui-panelgrid-blank" style="width:670px;" rendered="#{parceiroController.localDescDisponibilizaOutro == 'Outros'}" >
+                                        <h:outputLabel value="Inclua outros serviços oferecidos pelo local:"/>
+                                        <p:inputText />
+                                    </p:panelGrid>                                    
+                                </p:outputPanel>
+                            </p:panelGrid>
+
+                        </p:panelGrid>
+
+                        <p:accordionPanel id="apnlUpload" rendered="#{parceiroController.tela == 1}">
+                            <p:tab title="Upload de Fotos do Local">
+                                <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" > 
+                                    <p:growl id="messagesg" showDetail="true" />
+                                    <p:panelGrid columns="3" layout="grid" styleClass="ui-panelgrid-blank" columnClasses="ui-grid-col-10,ui-grid-col-4,ui-grid-col-4"> 
+                                        <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank" > 
+                                            <p:outputLabel value="Tipo de Arquivo"/>
+                                            <!--p:selectOneMenu value="#{nvVistoriaController.upload.tipoArquivo}" >
+                                                <f:selectItem itemLabel="Laudo" itemValue="LAUDO" />
+                                                <f:selectItem itemLabel="RAP" itemValue="RAP" />
+                                            </p:selectOneMenu-->
+                                        </p:panelGrid>                            
+                                        <p:fileUpload label="Selecionar Arquivo"  mode="simple" skinSimple="true"/>
+                                        <p:commandButton value="Adicionar" ajax="false"  update=" tblAnexos"/>
+                                    </p:panelGrid>                            
+                                </p:panelGrid>
+
+                                <p:dataTable id="tblAnexos" var="a" rowIndexVar="index"  emptyMessage="Lista vazia" reflow="true">
+                                    <p:column headerText="ID" width="8%" style="text-align: center">
+                                        <p:outputLabel value="#{index+1}"/>
+                                    </p:column>
+                                    <p:column headerText="Nome" style="text-align: center">
+                                        <p:outputLabel value="#{a.nomeArquivo}"/>
+                                    </p:column>
+                                    <p:column headerText="Tipo" style="text-align: center">
+                                        <p:outputLabel value="#{a.tipoArquivo}"/>
+                                    </p:column>
+                                    <p:column headerText="Usuário" style="text-align: center">
+                                        <p:outputLabel value="#{a.nomeUsuario}"/>
+                                    </p:column>
+
+                                    <p:column headerText="Download" width="8%" style="text-align: center" >
+                                        <p:commandButton  onclick="this.form.target = '_blank'" style="width: 50px" ajax="false"  icon="fa fa-arrow-circle-down white">
+                                            <p:fileDownload value="#{nvVistoriaController.fileDownload}" />
+                                        </p:commandButton>
+                                    </p:column>
+                                    <p:column headerText="Remover" width="8%" style="text-align: center">
+                                        <p:commandButton icon="fa fa-eraser white" style="width: 50px" styleClass="RedButton"   update=":frmDetalhe :frmLista">
+                                            <p:confirm header="Confirmação" message="Deseja excluir o anexo?" icon="ui-icon-alert" />
+                                        </p:commandButton>
+                                        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                            <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" />
+                                            <p:commandButton value="Não" type="button" styleClass="ui-confirmdialog-no" />
+                                        </p:confirmDialog> 
+                                    </p:column>
+                                </p:dataTable>
+
+                            </p:tab>
+                        </p:accordionPanel>
+
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </ui:define>
+
+</ui:composition>

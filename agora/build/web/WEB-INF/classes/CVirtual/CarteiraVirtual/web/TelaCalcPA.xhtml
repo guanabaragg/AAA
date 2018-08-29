@@ -1,0 +1,73 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"      
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Carteira Virtual</title>
+        <link href="css_Tela_Principal/css_Tela_Principal.css" rel="stylesheet"></link>
+
+    </h:head>
+    <h:body>
+
+        <ui:composition template="Template.xhtml">
+
+            <ui:define name="content">
+                <h:form>
+                    <br/>                                  
+
+                    <div style="width:95%; height:560px ; margin: auto">
+
+                        <h1 style="font-family:Agency FB; margin: auto;">Determinando um Xº termo de uma P.A</h1>
+                        <br/>
+                        <p:separator/>
+
+                        <p:panelGrid id="pnlPrincipal" columns="2" layout="grid" styleClass="ui-panelgrid-blank" style="margin: auto;">
+                            <p:growl showDetail="true" sticky="true" />                            
+
+                            <p:panelGrid></p:panelGrid>
+
+                            <p:panelGrid columns="1"> 
+                                <h:outputText style="font-family:Agency FB; font-size:18px;" value="Razão 1:" />
+                                <p:inputText value="#{calcTermoPA.r1}" style="font-family:Agency FB; width:250px; font-size:18px;" required="true"></p:inputText>                                                        
+                                <h:outputText style="font-family:Agency FB; font-size:18px;" value="Razão 2:" />
+                                <p:inputText value="#{calcTermoPA.r2}" style="font-family:Agency FB; width:250px; font-size:18px;" required="true"></p:inputText>                                                        
+                                <h:outputText style="font-family:Agency FB; font-size:18px;" value="Razão 3:" />
+                                <h:outputText value="#{calcTermoPA.r3}" style="font-family:Agency FB; width:250px; font-size:18px;" />                                                                                  
+                            </p:panelGrid>
+
+                            <p:panelGrid columns="1" layout="grid" styleClass="ui-panelgrid-blank">
+                                <h:outputText style="font-family:Agency FB; font-size:18px;" value="N - (Posiçao do Termo):" />
+                                <p:inputText id="n" value="#{calcTermoPA.n}" style="font-family:Agency FB; font-size:18px; width:350px; font-size:18px;" required="true"></p:inputText>
+                                <p:message for="n" display="icon" />
+
+                                <h:outputText style="font-family:Agency FB; font-size:18px;" value="Razão da PA:" />
+                                <h:outputText id="r" value="#{calcTermoPA.r}" style="font-family:Agency FB; font-size:22px; width:350px; color:black;" />
+
+                            </p:panelGrid>
+
+                            <p:panelGrid columns="1">
+                                <h:outputText style="font-family:Agency FB; font-size:18px;" value="O valor do #{calcTermoPA.getN()} º termo é :" />
+                                <h:outputText style="font-family:Agency FB; font-size:24px; color:black;" value="#{calcTermoPA.getaN()}" />                                
+                            </p:panelGrid>
+
+                        </p:panelGrid>
+
+                        <br/>  
+                        <p:separator/>                        
+
+                        <p:commandButton style="background-color:green; color: #FFFFFF; font-family:Agency FB; font-size:18px; margin-left:20px;"
+                                         value="Calcular" action="#{calcTermoPA.calcular()}" update="pnlPrincipal" />                        
+
+                        <p:commandButton style="background:#4682B4; color: #FFFFFF; font-family:Agency FB; font-size:18px; margin-left:20px;"
+                                         value="Atualizar" action="#{calcTermoPA.atualizar()}" ajax="false" />                      
+                    </div>
+                </h:form>
+            </ui:define>
+
+        </ui:composition>
+
+    </h:body>
+</html>

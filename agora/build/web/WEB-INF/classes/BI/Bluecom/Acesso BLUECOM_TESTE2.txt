@@ -1,0 +1,9 @@
+Acesso BLUECOM_TESTE2
+
+192.168.40.24:10500
+Usuário: Bruno
+senha: #c0m@2018
+
+LOGIN:
+Cross1 || Cross2 || Cross3
+senha: #c0m@2018

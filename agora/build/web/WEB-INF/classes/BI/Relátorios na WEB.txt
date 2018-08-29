@@ -1,0 +1,9 @@
+JMN 
+
+Contas a Pagar
+
+https://app.powerbi.com/view?r=eyJrIjoiNTMzZmFiZmQtMjc2Yi00ZTE0LTg1NDAtNDc0ZDE1ZmE4MTc3IiwidCI6ImYzMGM5ZTAwLTJlOTAtNDNmMS05MjJlLTk3YTBiNWQ0Y2ZiNyIsImMiOjR9
+
+Contas a Receber 
+
+https://app.powerbi.com/view?r=eyJrIjoiNzIxNWY4YWMtM2MyYS00ZmViLThiNTEtNjE5YzljN2E4YTdmIiwidCI6ImYzMGM5ZTAwLTJlOTAtNDNmMS05MjJlLTk3YTBiNWQ0Y2ZiNyIsImMiOjR9

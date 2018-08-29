@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+
+        <p:ajaxStatus  style="width:32px;height:32px;position:fixed;left: 10px;top: 10px">
+            <f:facet name="start">
+                <p:graphicImage width="50" height="50" name="images/ajax001.gif" library="spark-layout"/>
+            </f:facet>
+
+            <f:facet name="complete">
+                <h:outputText value="" />
+            </f:facet>
+        </p:ajaxStatus>
+
+
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>Login do Usuário</title>
+        <h:outputScript name="js/layout.js" library="spark-layout" />
+
+        <h:outputText value="&lt;!--[if gte IE 9]&gt;" escape="false" />
+        <style type="text/css">
+            /* styles for IE 9 */
+        </style>
+        <h:outputText value="&lt;![endif]--&gt;" escape="false" />
+
+        <ui:insert name="head" />
+
+    </h:head>
+
+    <h:body>
+        <h:form id="frmPrincipal">         
+            <div id="layout-portlets-cover">
+                <div class="other-pages-box Container30 Responsive50 MarAuto Fnone TexAlCenter ShadowGray MarTop10" style="margin-top:5%; background-repeat:no-repeat; background-position:center; background-size:cover;">
+                    <div class="Container80 Fnone MarAuto TexAlCenter">
+                        <div class="EmptyBox10"></div>
+
+                        <p:messages id="messages"  autoUpdate="true" closable="true" />
+
+                        <div class="TexAlLeft">
+                            <!--h2 class="BigTopic" style="font-size:18px;">Sistema de Prontuário e Gestão CIM</h2-->
+                            <h2 class="BigTopic" style="font-size:16px;">SISTEMA DE PRONTUÁRIO E GESTÃO DO CIM</h2>
+
+                            <p:outputLabel value="Usuário" />
+                            <div class="EmptyBox1"></div>
+                            <p:inputText value="#{loginController.login}" styleClass="Container100 Fnone MarAuto Fs15" required="true" requiredMessage="[USUÁRIO] é Obrigatório!"/>
+
+                            <div class="EmptyBox10"></div>
+
+                            <p:outputLabel value="Senha" />
+                            <div class="EmptyBox1"></div>
+                            <p:password value="#{loginController.senha}" styleClass="Container100 Fnone MarAuto Fs15" feedback="false" required="true" requiredMessage="[SENHA] é Obrigatório!"/>
+
+                            <div class="EmptyBox10"></div>
+
+                            <div class="EmptyBox10"></div>
+
+                        </div>
+
+                        <div class="EmptyBox20"></div>
+                        <div class="EmptyBox30"></div>
+                        <p:commandButton actionListener="#{loginController.log()}" value="Entrar"  styleClass="Fs16" update=":frmPrincipal"/>
+                        <div class="EmptyBox10"></div>
+                    </div>
+                </div>
+            </div>
+        </h:form>     
+
+        <h:outputStylesheet name="css/core-layout.css" library="spark-layout" />
+        <h:outputStylesheet name="css/font-awesome.css" library="spark-layout" />
+        <h:outputStylesheet name="css/animate.css" library="spark-layout" />
+        <h:outputStylesheet name="css/spark-layout.css" library="spark-layout" />
+
+    </h:body>
+
+</html>

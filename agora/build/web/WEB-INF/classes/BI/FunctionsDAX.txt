@@ -1,0 +1,40 @@
+
+SomaEntradas = CALCULATE(SUM('FluxoCaixa'[Movimentacao]);FILTER('FluxoCaixa'[Tipo]="Entrada"))
+//pega o fluxo de caixa e o total do tipo "entrada"
+
+SomaDespesas = CALCULATE(SUM('FluxoCaixa'[Movimentacao]);FILTER('FluxoCaixa'[Tipo]="Saida"))
+//pega o fluxo de caixa e o total do tipo "saida"
+
+CalculoSaldo = [SomaEntradas]-[SomaDespesas]
+//pega o valor de 'somaEntradas' e diminui por 'somaDespesas'
+
+Cod. Categoria: = LEFT(fVendas[Produto];2)
+// pega os dois primeiros campos da esquerda pra direita.
+
+Soma Vendas: = SUM('Vendas'[Valor Total])
+//Soma o valor total do campo 'valor total' da tabela 'vendas'
+
+Valor Total: = fVendas[Quantidade]*RELATED(dTabPreco[Custo Unitáro])
+// pega o valor da tabela 'quantidade' e multiplica pelo o valor da tabela 'custo unitario'
+
+Ranking = RANKX(ALL(dClientes[Plano vendido]);[MRR])
+//pega o valor da tabela 'plano vendido' e faz um ranking dela 1,2,3 etc...
+
+MRR Acc = CALCULATE([MRR]; TOPN([Ranking]; ALL(dClientes[Plano vendido]); [MRR]))
+// pega o valor da linha acima e faz a soma, vai acumulando 1 + 2 + 3 + 4....etc
+
+% MRR Acc = [MRR Acc] / CALCULATE([MRR]; ALL(dclientes[Plano vendido]))
+//
+
+
+
+
+
+
+
+
+
+
+
+
+

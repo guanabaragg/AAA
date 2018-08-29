@@ -1,0 +1,27 @@
+body {
+    width:100%;
+    height:100%;
+    margin:0;
+    padding:0;
+}
+.padrao {
+    font-family:Agency FB;
+    font-size:19px;
+}
+
+.logo {
+    left:100px;
+    width:150px; 
+    height:90px; 
+}
+.nav1 {
+    width:100%;
+    height:90px;
+    background-color:#0a3acd;
+    
+}
+.nav2 {
+    width:100%;
+    height:522px;
+    background-color:#E0F8E0; /* verde agua hsushuhs*/
+}

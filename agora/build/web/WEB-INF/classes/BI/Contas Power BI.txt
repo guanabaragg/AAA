@@ -1,0 +1,25 @@
+JMN 
+
+email: bi@missoesnacionais.org.br
+senha: JMN@power01
+
+
+https://relacionamento.jmn.org.br/api/servico/bi/listarAPagar 
+
+
+JMM
+
+bi.ti@jmm.org.br
+Teste@2011@
+
+BlueCom
+
+bi.financeiro@bluecom.com.br
+bluecom@2018
+
+http://webmail.bluecom.com.br/
+
+ProScan
+
+bi@proscandiagnostico.com.br
+Clinica2018

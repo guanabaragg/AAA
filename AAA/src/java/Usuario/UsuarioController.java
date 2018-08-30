@@ -10,6 +10,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.context.FacesContext;
@@ -30,7 +31,7 @@ public class UsuarioController {
 
     private ArrayList<usuariosBean> lista = new ArrayList();
 
-    public void lista() {
+    public List<usuariosBean> lista() {
 
         try {
 
@@ -52,20 +53,21 @@ public class UsuarioController {
 
                 for (usuariosBean lista1 : lista) {
                     setId(lista1.getId());
-
-//                    setName(lista1.getNome());
-//                    setPassword(lista1.getSenha());
-//                    setEmaill(lista1.getEmail());
+                    setName(lista1.getNome());
+                    setPassword(lista1.getSenha());
+                    setEmaill(lista1.getEmail());
+                    return lista;
 //                    System.out.println("\nId: " + lista1.getId() + "\nNome: " + lista1.getNome() + "\nSenha: " + lista1.getSenha() + "\nEmail: " + lista1.getEmail() + "\n ");
 //                    //JOptionPane.showMessageDialog(null, "Id: " + user.getId() + "\nNome: " + user.getNome() + "\nSenha: " + user.getSenha() + "\nEmail: " + user.getEmail());                    
                 }
-            }
-            System.out.println("foi mané uhuhuhulll");
-            Conexao.fecharConexao();
+                System.out.println("foi mané uhuhuhulll");
+                Conexao.fecharConexao();
 
+            }
         } catch (SQLException ex) {
             System.out.println("deu merda ao buscar");
         }
+        return lista;
     }
 
     public void salvar() {

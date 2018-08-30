@@ -104,7 +104,7 @@
 
 
                         <div class="Container100 Responsive100" >
-                            <p:dataTable id="listaPesquisa" value="#{usuarioController.lista}" rendered="#{parceiroController.tela == 0}" reflow="true" emptyMessage="Lista vazia" paginator="true" rows="15"  rowsPerPageTemplate="15,50,100">
+                            <p:dataTable id="listaPesquisa" value="#{usuarioController.lista}"  rendered="#{parceiroController.tela == 0}" reflow="true" emptyMessage="Lista vazia" paginator="true" rows="15"  rowsPerPageTemplate="15,50,100">
 
                                 <p:column headerText="ID" >
                                     <p:commandLink value="#{usuarioController.id}"  ajax="false" update=":frmDetalhe :frmLista" />

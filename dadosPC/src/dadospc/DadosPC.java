@@ -20,11 +20,10 @@ public class DadosPC {
     public static void main(String[] args) throws UnknownHostException {
 
         String nomePc = InetAddress.getLocalHost().getHostName();
-        System.out.println("Informações do pc\nNome: " + nomePc);
-
         String ipPc = InetAddress.getLocalHost().getHostAddress();
-        System.out.println("IP: " + ipPc);
-
+        
+        System.out.println("Informações do pc\nNome: " + nomePc
+                           + "\nIP: " + ipPc");               
     }
 
 }
